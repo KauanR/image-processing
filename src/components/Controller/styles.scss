@@ -1,0 +1,28 @@
+.controller-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    div.controller > div.MuiCardContent-root {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    
+        div.title {
+            text-align: center;
+        }
+    
+        div.content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .5rem;
+        }
+
+        div.actions {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+}
