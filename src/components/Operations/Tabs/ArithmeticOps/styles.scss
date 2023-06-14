@@ -1,4 +1,4 @@
-div#arithmetic-ops {
+div#arithmetic-ops:not([hidden]) {
     display: grid;
     justify-items: center;
     grid-template-columns: 1fr 1fr;

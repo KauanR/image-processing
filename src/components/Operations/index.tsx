@@ -49,7 +49,11 @@ export const Operations = ({
                             images={images}
                             updateResult={setResult}
                         />
-                        <TabLogicalOps tabValue='2' images={images} />
+                        <TabLogicalOps
+                            tabValue='2'
+                            images={images}
+                            updateResult={setResult}
+                        />
                         <TabEnhancements tabValue='3' images={images} />
                         <TabFiltering tabValue='4' images={images} />
                     </TabContext>
