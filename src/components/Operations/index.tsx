@@ -1,14 +1,11 @@
-import { Images } from 'src/constants/types/images'
 import { OperationsDisplay } from './Display'
-import './styles.scss'
 import { Tab } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TabContext, TabList } from '@mui/lab'
-import { TabTransformations } from './Tabs/Transformations'
-import { TabArithmeticOps } from './Tabs/ArithmeticOps'
-import { TabLogicalOps } from './Tabs/LogicalOps'
-import { TabEnhancements } from './Tabs/Enhancements'
-import { TabFiltering } from './Tabs/Filtering'
+import { TabArithmeticOps, TabEnhancements, TabFiltering, TabLogicalOps, TabTransformations } from './Tabs'
+import { OperationsResult } from './Result'
+import { Result, Images } from 'src/constants/types'
+import './styles.scss'
 
 type OperationsProps = {
     images: Images
@@ -22,6 +19,8 @@ export const Operations = ({
 
     const [tabsValue, setTabsValue] = useState<string>('0')
 
+    const [result, setResult] = useState<Result | undefined>(undefined)
+
     return (
         <>
             <OperationsDisplay goBack={goBack} images={images} />
@@ -29,7 +28,10 @@ export const Operations = ({
             <div className='operations'>
                 <div className='tabs'>
                     <TabContext value={tabsValue}>
-                        <TabList centered onChange={(_, newValue) => setTabsValue(newValue)}>
+                        <TabList 
+                            variant='scrollable' 
+                            onChange={(_, newValue) => setTabsValue(newValue)}
+                        >
                             <Tab label='Transformações' value='0' />
                             <Tab label='Op. Aritméticas' value='1' />
                             <Tab label='Op. Lógicas' value='2' />
@@ -38,16 +40,18 @@ export const Operations = ({
                         </TabList>
 
                         <TabTransformations tabValue='0' images={images} />
-                        <TabArithmeticOps tabValue='1' images={images} />
+                        <TabArithmeticOps 
+                            tabValue='1' 
+                            images={images}
+                            updateResult={setResult}
+                        />
                         <TabLogicalOps tabValue='2' images={images} />
                         <TabEnhancements tabValue='3' images={images} />
                         <TabFiltering tabValue='4' images={images} />
                     </TabContext>
                 </div>
 
-                <div className="result">
-                    aaaaaaaaaa
-                </div>
+                <OperationsResult result={result} />
             </div>
         </>
     )
