@@ -1,0 +1,15 @@
+div.operations-display {
+    position: relative;
+
+    button.go-back {
+        position: absolute;
+        top: calc(50% - 16px);
+        left: 2rem;
+    }
+
+    div.images {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+}

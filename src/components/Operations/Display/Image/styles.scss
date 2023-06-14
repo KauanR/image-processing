@@ -1,0 +1,12 @@
+div.display-image > div.MuiCardContent-root {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    text-align: center;
+
+    canvas {
+        border: 1px solid #393333;
+        border-radius: 4px;
+    }
+}

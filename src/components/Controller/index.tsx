@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Typography } from '@mui/material'
 import { ControllerItem } from './Item'
 import { useState } from 'react'
-import { Images } from 'src/constant/types/images'
+import { Images } from 'src/constants/types'
 import './styles.scss'
 
 type ControllerProps = {
