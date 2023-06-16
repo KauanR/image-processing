@@ -2,7 +2,6 @@ import { TabPanel } from '@mui/lab'
 import { Images, Result } from 'src/constants/types'
 import { Button } from '@mui/material'
 import './styles.scss'
-import { useXOR } from 'src/hooks'
 
 type Props = {
     images: Images
