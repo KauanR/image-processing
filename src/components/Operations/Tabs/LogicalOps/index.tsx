@@ -1,6 +1,7 @@
 import { TabPanel } from '@mui/lab'
-import { Images, Result } from 'src/constants/types'
 import { Button } from '@mui/material'
+import { Images, Result } from 'src/constants/types'
+import useLogicalOps from 'src/hooks/useLogicalOps'
 import './styles.scss'
 
 type Props = {
@@ -16,82 +17,66 @@ export const TabLogicalOps = ({
 }: Props) => {
 
     const { one: imageOne, two: imageTwo } = images
+    const { and, or, xor, not } = useLogicalOps()
 
-    const and = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] = result.data[i] && (imageTwo?.data[i] || 0)
-            result.data[i + 1] = result.data[i + 1] && (imageTwo?.data[i + 1] || 0)
-            result.data[i + 2] = result.data[i + 2] && (imageTwo?.data[i + 2] || 0)
-        }
-
+    const toAnd = () => {
         updateResult({
             description: 'Operações Lógicas: AND',
-            value: result
+            value: and(imageOne, imageTwo)
         })
     }
 
-    const or = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] = result.data[i] || (imageTwo?.data[i] || 0)
-            result.data[i + 1] = result.data[i + 1] || (imageTwo?.data[i + 1] || 0)
-            result.data[i + 2] = result.data[i + 2] || (imageTwo?.data[i + 2] || 0)
-        }
-
+    const toOr = () => {
         updateResult({
             description: 'Operações Lógicas: OR',
-            value: result
+            value: or(imageOne, imageTwo)
         })
     }
 
-    const xor = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] = result.data[i] === imageTwo?.data[i] ? 0 : 255
-            result.data[i + 1] = result.data[i + 1] === imageTwo?.data[i + 1] ? 0 : 255
-            result.data[i + 2] = result.data[i + 2] === imageTwo?.data[i + 2] ? 0 : 255
-        }
-
+    const toXor = () => {
         updateResult({
             description: 'Operações Lógicas: XOR',
-            value: result
+            value: xor(imageOne, imageTwo)
         })
     }
 
-    const not = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] = 255 - result.data[i]
-            result.data[i + 1] = 255 - result.data[i + 1]
-            result.data[i + 2] = 255 - result.data[i + 2]
-        }
-
+    const toNot = () => {
         updateResult({
             description: 'Operações Lógicas: NOT',
-            value: result
+            value: not(imageOne, imageTwo)
         })
     }
 
     return (
         <TabPanel id='logical-ops' value={tabValue}>
-            <Button variant='contained' disabled={!imageTwo} onClick={and}>
+            <Button 
+                variant='contained' 
+                disabled={!imageTwo} 
+                onClick={toAnd}
+            >
                 AND
             </Button>
             
-            <Button variant='contained' disabled={!imageTwo} onClick={or}>
+            <Button 
+                variant='contained' 
+                disabled={!imageTwo} 
+                onClick={toOr}
+            >
                 OR
             </Button>
 
-            <Button variant='contained' disabled={!imageTwo} onClick={xor}>
+            <Button 
+                variant='contained' 
+                disabled={!imageTwo} 
+                onClick={toXor}
+            >
                 XOR
             </Button>
 
-            <Button variant='contained' onClick={not}>
+            <Button 
+                variant='contained' 
+                onClick={toNot}
+            >
                 NOT
             </Button>
         </TabPanel>

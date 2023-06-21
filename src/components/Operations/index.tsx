@@ -54,7 +54,11 @@ export const Operations = ({
                             images={images}
                             updateResult={setResult}
                         />
-                        <TabEnhancements tabValue='3' images={images} />
+                        <TabEnhancements 
+                            tabValue='3' 
+                            images={images} 
+                            updateResult={setResult}
+                        />
                         <TabFiltering tabValue='4' images={images} />
                     </TabContext>
                 </div>

@@ -2,6 +2,7 @@ import { TabPanel } from '@mui/lab'
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Images, Result } from 'src/constants/types'
+import useArithmeticOps from 'src/hooks/useArithmeticOps'
 import './styles.scss'
 
 type Props = {
@@ -17,95 +18,42 @@ export const TabArithmeticOps = ({
 }: Props) => {
 
     const { one: imageOne, two: imageTwo } = images
-    
+    const { add, subtract, multiply, divide, blend } = useArithmeticOps()
+
     const [blendingVal, setBlendingVal] = useState<number>(0)
 
-    const add = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] += imageTwo?.data[i] || 0
-            result.data[i + 1] += imageTwo?.data[i + 1] || 0
-            result.data[i + 2] += imageTwo?.data[i + 2] || 0
-            result.data[i + 3] += imageTwo?.data[i + 3] || 0
-        }
-
+    const toAdd = () => {
         updateResult({
             description: 'Operações Aritméticas: Adição',
-            value: result
+            value: add(imageOne, imageTwo)
         })
     }
 
-    const subtract = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] -= imageTwo?.data[i] || 0
-            if(result.data[i] < 0) result.data[i] = 0
-
-            result.data[i + 1] -= imageTwo?.data[i + 1] || 0
-            if(result.data[i + 1] < 0) result.data[i + 1] = 0
-
-            result.data[i + 2] -= imageTwo?.data[i + 2] || 0
-            if(result.data[i + 2] < 0) result.data[i + 2] = 0
-        }
-
+    const toSubtract = () => {
         updateResult({
             description: 'Operações Aritméticas: Subtração',
-            value: result
+            value: subtract(imageOne, imageTwo)
         })
     }
 
-    const multiply = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] *= imageTwo?.data[i] || 0
-            if(result.data[i] > 255) result.data[i] = 255
-
-            result.data[i + 1] *= imageTwo?.data[i + 1] || 0
-            if(result.data[i + 1] > 255) result.data[i + 1] = 255
-
-            result.data[i + 2] *= imageTwo?.data[i + 2] || 0
-            if(result.data[i + 2] > 255) result.data[i + 2] = 255
-
-            result.data[i + 3] *= imageTwo?.data[i + 3] || 0
-            if(result.data[i + 3] > 255) result.data[i + 3] = 255
-        }
-
+    const toMultiply = () => {
         updateResult({
             description: 'Operações Aritméticas: Multiplicação',
-            value: result
+            value: multiply(imageOne, imageTwo)
         })
     }
 
-    const divide = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] /= imageTwo?.data[i] || 0
-            result.data[i + 1] /= imageTwo?.data[i + 1] || 0
-            result.data[i + 2] /= imageTwo?.data[i + 2] || 0
-        }
-
+    const toDivide = () => {
         updateResult({
             description: 'Operações Aritméticas: Divisão',
-            value: result
+            value: multiply(imageOne, imageTwo)
         })
     }
 
-    const blend = () => {
-        const result = new ImageData(new Uint8ClampedArray(imageOne.data), 250, 285)
-
-        for(let i = 0; i < result.data.length; i += 4) {
-            result.data[i] = blendingVal * result.data[i] + (1 - blendingVal) * (imageTwo?.data[i] || 0)
-            result.data[i + 1] = blendingVal * result.data[i + 1] + (1 - blendingVal) * (imageTwo?.data[i + 1] || 0)
-            result.data[i + 2] = blendingVal * result.data[i + 2] + (1 - blendingVal) * (imageTwo?.data[i + 2] || 0)
-        }
-
+    const toBlend = () => {
         updateResult({
             description: `Operações Aritméticas: Blending(${blendingVal})`,
-            value: result
+            value: blend(blendingVal, imageOne, imageTwo)
         })
     }
 
@@ -114,7 +62,7 @@ export const TabArithmeticOps = ({
             <Button 
                 variant='contained' 
                 disabled={!images.two} 
-                onClick={add}
+                onClick={toAdd}
             >
                 Adição
             </Button>
@@ -122,7 +70,7 @@ export const TabArithmeticOps = ({
             <Button 
                 variant='contained' 
                 disabled={!images.two} 
-                onClick={subtract}
+                onClick={toSubtract}
             >
                 Subtração
             </Button>
@@ -130,7 +78,7 @@ export const TabArithmeticOps = ({
             <Button 
                 variant='contained' 
                 disabled={!images.two} 
-                onClick={multiply}
+                onClick={toMultiply}
             >
                 Multiplicação
             </Button>
@@ -138,7 +86,7 @@ export const TabArithmeticOps = ({
             <Button 
                 variant='contained' 
                 disabled={!images.two} 
-                onClick={divide}
+                onClick={toDivide}
             >
                 Divisão
             </Button>
@@ -153,7 +101,7 @@ export const TabArithmeticOps = ({
                 <Button 
                     variant='contained' 
                     disabled={!blendingVal || !images.two} 
-                    onClick={blend}
+                    onClick={toBlend}
                 >
                     Blending
                 </Button>
