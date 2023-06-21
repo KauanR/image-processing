@@ -32,7 +32,7 @@ const useGaussFilter = (image: ImageData, value: number): ImageData => {
     const { width, height, data } = image
     const resultData = new Uint8ClampedArray(data.length)
 
-    const kernelSize = 3
+    const kernelSize = 5
     const kernelOffset = Math.floor(kernelSize / 2)
 
     const kernel = kernelHandler(kernelSize, value)
