@@ -1,5 +1,5 @@
 export * from './ArithmeticOps'
 export * from './Enhancements'
-export * from './Filtering'
+export * from './GaussFiltering'
 export * from './LogicalOps'
 export * from './Conversions'

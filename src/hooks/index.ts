@@ -1,4 +1,5 @@
 export * from './useArithmeticOps'
 export * from './useConversions'
 export * from './useDrawImageProp'
+export * from './useGaussFilter'
 export * from './useLogicalOps'

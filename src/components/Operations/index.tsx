@@ -2,7 +2,7 @@ import { OperationsDisplay } from './Display'
 import { Tab } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { TabContext, TabList } from '@mui/lab'
-import { TabArithmeticOps, TabEnhancements, TabFiltering, TabLogicalOps, TabConversions } from './Tabs'
+import { TabArithmeticOps, TabEnhancements, TabGaussFiltering, TabLogicalOps, TabConversions } from './Tabs'
 import { OperationsResult } from './Result'
 import { Result, Images } from 'src/constants/types'
 import './styles.scss'
@@ -59,7 +59,11 @@ export const Operations = ({
                             images={images} 
                             updateResult={setResult}
                         />
-                        <TabFiltering tabValue='4' images={images} />
+                        <TabGaussFiltering
+                            tabValue='4'
+                            images={images}
+                            updateResult={setResult}
+                        />
                     </TabContext>
                 </div>
 

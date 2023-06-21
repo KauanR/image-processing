@@ -1,0 +1,14 @@
+div#gauss-filtering:not([hidden]) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    div.MuiFormControl-root {
+        width: 200px;
+    }
+
+    button {
+        width: max-content;
+    }
+}
