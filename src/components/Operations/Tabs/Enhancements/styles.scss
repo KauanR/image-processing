@@ -1,0 +1,30 @@
+div#enhancements:not([hidden]) {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 1rem;
+
+    button {
+        width: max-content;
+
+        &#cons-smoothing {
+            grid-column: span 2;
+        }
+    }
+
+    div.order {
+        grid-column: span 2;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        div.MuiFormControl-root {
+            width: 200px;
+        }
+
+        button {
+            height: max-content;
+        }
+    }
+}
