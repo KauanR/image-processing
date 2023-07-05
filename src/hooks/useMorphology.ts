@@ -101,8 +101,8 @@ const useMorphology = () => {
         return dilation(erosion(image, kernel), kernel)
     }
 
-    const closing = () => {
-
+    const closing = (image: ImageData, kernel: number[]) => {
+        return erosion(dilation(image, kernel), kernel)
     }
 
     const edge = () => {

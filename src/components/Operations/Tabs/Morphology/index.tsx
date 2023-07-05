@@ -19,7 +19,7 @@ export const TabMorphology = ({
 }: Props) => {
 
     const { one: image } = images
-    const { erosion, dilation } = useMorphology()
+    const { erosion, dilation, opening, closing } = useMorphology()
 
     const [kernelSize, setKernelSize] = useState<number>(3)
     const [kernel, setKernel] = useState<number[]>([
@@ -39,6 +39,20 @@ export const TabMorphology = ({
         updateResult({
             description: 'Operações Morfológicas: Dilatação',
             value: dilation(image, kernel)
+        })
+    }
+
+    const toOpening = () => {
+        updateResult({
+            description: 'Operações Morfológicas: Abertura',
+            value: opening(image, kernel)
+        })
+    }
+
+    const toClosing = () => {
+        updateResult({
+            description: 'Operações Morfológicas: Fechamento',
+            value: closing(image, kernel)
         })
     }
 
@@ -64,6 +78,20 @@ export const TabMorphology = ({
                     onClick={toDilatation}
                 >
                     Dilatação
+                </Button>
+
+                <Button 
+                    variant='contained' 
+                    onClick={toOpening}
+                >
+                    Abertura
+                </Button>
+
+                <Button 
+                    variant='contained' 
+                    onClick={toClosing}
+                >
+                    Fechamento
                 </Button>
             </div>
         </TabPanel>
