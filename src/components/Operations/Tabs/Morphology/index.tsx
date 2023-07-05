@@ -1,7 +1,10 @@
 import { TabPanel } from '@mui/lab'
 import { Button } from '@mui/material'
+import { useState } from 'react'
 import { Images, Result } from 'src/constants/types'
 import useMorphology from 'src/hooks/useMorphology'
+import { TabMorphologyKernel } from './Kernel'
+import './styles.scss'
 
 type Props = {
     images: Images
@@ -16,22 +19,14 @@ export const TabMorphology = ({
 }: Props) => {
 
     const { one: image } = images
-    const { erosion } = useMorphology()
+    const { erosion, dilation } = useMorphology()
 
-    const kernel = [
-        0, 0, 1, 0, 0,
-        0, 1, 1, 1, 0,
-        1, 1, 1, 1, 1,
-        0, 1, 1, 1, 0,
-        0, 0, 1, 0, 0
-    ]
-
-    // const kernel = [
-    //     0, 1, 0,
-    //     1, 1, 1,
-    //     0, 1, 0
-    // ]
-
+    const [kernelSize, setKernelSize] = useState<number>(3)
+    const [kernel, setKernel] = useState<number[]>([
+        0, 1, 0,
+        1, 1, 1,
+        0, 1, 0
+    ])
 
     const toErosion = () => {
         updateResult({
@@ -40,15 +35,37 @@ export const TabMorphology = ({
         })
     }
 
+    const toDilatation = () => {
+        updateResult({
+            description: 'Operações Morfológicas: Dilatação',
+            value: dilation(image, kernel)
+        })
+    }
+
     return (
         <TabPanel id='morphology' value={tabValue}>
+            <TabMorphologyKernel
+                kernel={kernel}
+                setKernel={setKernel}
+                kernelSize={kernelSize}
+                setKernelSize={setKernelSize}
+            />
 
-            <Button 
-                variant='contained' 
-                onClick={toErosion}
-            >
-                Erosão
-            </Button>
+            <div id='buttons'>
+                <Button 
+                    variant='outlined' 
+                    onClick={toErosion}
+                >
+                    Erosão
+                </Button>
+
+                <Button 
+                    variant='outlined' 
+                    onClick={toDilatation}
+                >
+                    Dilatação
+                </Button>
+            </div>
         </TabPanel>
     )
 
