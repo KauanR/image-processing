@@ -6,6 +6,7 @@ import { TabArithmeticOps, TabEnhancements, TabGaussFiltering, TabLogicalOps, Ta
 import { OperationsResult } from './Result'
 import { Result, Images } from 'src/constants/types'
 import './styles.scss'
+import { TabMorphology } from './Tabs/Morphology'
 
 type OperationsProps = {
     images: Images
@@ -37,6 +38,7 @@ export const Operations = ({
                             <Tab label='Op. Lógicas' value='2' />
                             <Tab label='Realce de Images' value='3' />
                             <Tab label='Filtragem Gaussiana' value='4' />
+                            <Tab label='Morfologia' value='5' />
                         </TabList>
 
                         <TabConversions 
@@ -61,6 +63,11 @@ export const Operations = ({
                         />
                         <TabGaussFiltering
                             tabValue='4'
+                            images={images}
+                            updateResult={setResult}
+                        />
+                        <TabMorphology
+                            tabValue='5'
                             images={images}
                             updateResult={setResult}
                         />
