@@ -5,39 +5,47 @@ const useMorphology = () => {
 
         const result = new Uint8ClampedArray(data.length)
 
-        const kernelSize = kernel.length
+        const getPixelIndex = (x: number, y: number) => (y * width + x) * 4
+
+        const kernelSize = Math.sqrt(kernel.length)
         const halfKernel = Math.floor(kernelSize / 2)
 
-        for(let y = halfKernel; y < height - halfKernel; y++) {
-            for(let x = halfKernel; x < width - halfKernel; x++) {
-                // controla o FITS
-                // FITS = Todos os pixels 1 no elemento estruturante cobrem uma área na imagem também com valores 1
+        for(let y = 0; y < height; y++) {
+            for(let x = 0; x < width; x++) {
                 let allBlack = true
 
-                let kernelIndex = 0
+                for (let j = -halfKernel; j <= halfKernel; j++)  {
+                    for (let i = -halfKernel; i <= halfKernel; i++) {
+                        const kernelIndex = (j + halfKernel) * kernelSize + (i + halfKernel)
+                        const kernelValue = kernel[kernelIndex]
 
-                for (let ky = -halfKernel; ky <= halfKernel; ky++)  {
-                    for (let kx = -halfKernel; kx <= halfKernel; kx++) {
-                        const index = ((y + ky) * width + (x + kx)) * 4
-                        const pixel = data[index]
-                        const kernelPixel = kernel[kernelIndex++]
+                        const sourceX = x + i
+                        const sourceY = y + j
 
-                        // Se bateu o FITS quebra toda a iteração
-                        if (kernelPixel === 1 && pixel !== 0) {
+                        if(sourceX < 0 || sourceX >= width || sourceY < 0 || sourceY >= height) {
+                            allBlack = false
+                            break
+                        }
+
+                        const sourceIndex = getPixelIndex(sourceX, sourceY)
+                        const sourceValue = data[sourceIndex]
+
+                        if(kernelValue === 1 && sourceValue !== 0) {
                             allBlack = false
                             break
                         }
                     }
 
-                    if(!allBlack) {
-                        break
-                    }
+                    if(!allBlack) break
                 }
 
-                const outputIndex = (y * width + x) * 4
-                for (let i = 0; i < 4; i++) {
-                    result[outputIndex + i] = allBlack ? 0 : 255
-                }
+                const index = getPixelIndex(x, y)
+                const value = allBlack ? 0 : 255
+    
+                result[index] = value
+                result[index + 1] = value
+                result[index + 2] = value
+                result[index + 3] = 255
             }
         }
 
@@ -48,49 +56,47 @@ const useMorphology = () => {
         const { width, height, data } = image
 
         const result = new Uint8ClampedArray(data.length)
+        
+        const getPixelIndex = (x: number, y: number) => (y * width + x) * 4
 
-        const kernelSize = kernel.length
+        const kernelSize = Math.sqrt(kernel.length)
         const halfKernel = Math.floor(kernelSize / 2)
 
-        for(let y = halfKernel; y < height - halfKernel; y++) {
-            for(let x = halfKernel; x < width - halfKernel; x++) {
-                // controla o HITS
-                // HITS = Qualquer pixel 1 do elemento estruturante cobre um elemento 1 da imagem
-                let anyWhite = false
-    
-                let kernelIndex = 0
+        for(let y = 0; y < height; y++) {
+            for(let x = 0; x < width; x++) {
+                let anyBlack = false
 
-                for (let ky = -halfKernel; ky <= halfKernel; ky++)  {
-                    for (let kx = -halfKernel; kx <= halfKernel; kx++) {
-                        const index = ((y + ky) * width + (x + kx)) * 4
-                        // Controla se achou um pixel HIT, se achou, para todas a iterações
-                        let pixelIsWhite = false
+                for (let j = -halfKernel; j <= halfKernel; j++) {
+                    for (let i = -halfKernel; i <= halfKernel; i++) {
+                        const kernelIndex = (j + halfKernel) * kernelSize + (i + halfKernel)
+                        const kernelValue = kernel[kernelIndex]
 
-                        for(let i = 0; i < 3; i++) {
-                            const pixel = data[index + i]
-                            const kernelPixel = kernel[kernelIndex++]
+                        const sourceX = x + i
+                        const sourceY = y + j
 
-                            if(kernelPixel === 1 && pixel !== 0) {
-                                pixelIsWhite = true
-                                break
-                            }
+                        if(sourceX < 0 || sourceX >= width || sourceY < 0 || sourceY >= height) {
+                            continue
                         }
 
-                        if(pixelIsWhite) {
-                            anyWhite = true
-                            break
-                        }
+                        const sourceIndex = getPixelIndex(sourceX, sourceY)
+                        const sourceValue = data[sourceIndex]
 
-                        if(anyWhite) {
+                        if(kernelValue === 1 && sourceValue === 0) {
+                            anyBlack = true
                             break
                         }
                     }
+
+                    if(anyBlack) break
                 }
 
-                const outputIndex = (y * width + x) * 4
-                for (let i = 0; i < 4; i++) {
-                    result[outputIndex + i] = anyWhite ? 255 : 0
-                }
+                const index = getPixelIndex(x, y)
+                const value = anyBlack ? 0 : 255
+
+                result[index] = value
+                result[index + 1] = value
+                result[index + 2] = value
+                result[index + 3] = 255
             }
         }
 
