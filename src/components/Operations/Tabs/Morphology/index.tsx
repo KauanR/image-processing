@@ -19,7 +19,13 @@ export const TabMorphology = ({
 }: Props) => {
 
     const { one: image } = images
-    const { erosion, dilation, opening, closing } = useMorphology()
+    const { 
+        erosion, 
+        dilation, 
+        opening, 
+        closing, 
+        contour 
+    } = useMorphology()
 
     const [kernelSize, setKernelSize] = useState<number>(3)
     const [kernel, setKernel] = useState<number[]>([
@@ -53,6 +59,13 @@ export const TabMorphology = ({
         updateResult({
             description: 'Operações Morfológicas: Fechamento',
             value: closing(image, kernel)
+        })
+    }
+
+    const toContour = () => {
+        updateResult({
+            description: 'Operações Morfológicas: Contorno',
+            value: contour(image, kernel)
         })
     }
 
@@ -92,6 +105,13 @@ export const TabMorphology = ({
                     onClick={toClosing}
                 >
                     Fechamento
+                </Button>
+
+                <Button 
+                    variant='contained' 
+                    onClick={toContour}
+                >
+                    Contorno
                 </Button>
             </div>
         </TabPanel>

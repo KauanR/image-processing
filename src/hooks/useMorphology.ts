@@ -1,4 +1,8 @@
+import useArithmeticOps from './useArithmeticOps'
+
 const useMorphology = () => {
+
+    const { subtract } = useArithmeticOps()
 
     const erosion = (image: ImageData, kernel: number[]) => {
         const { width, height, data } = image
@@ -111,8 +115,8 @@ const useMorphology = () => {
         return erosion(dilation(image, kernel), kernel)
     }
 
-    const edge = () => {
-
+    const contour = (image: ImageData, kernel: number[]) => {
+        return subtract(erosion(image, kernel), image)
     }
 
     return {
@@ -120,7 +124,7 @@ const useMorphology = () => {
         dilation,
         opening,
         closing,
-        edge
+        contour
     }
 }
 
